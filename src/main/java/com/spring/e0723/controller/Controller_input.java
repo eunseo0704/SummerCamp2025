@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 /**
@@ -60,7 +61,8 @@ public class Controller_input {
         log.info("save : " + save);
 
 
-        return "";
+        //return "redirect:/articles";
+        return "redirect:/show/"+save.getId();
     }
 
     /** localhost:8080/show/3
@@ -77,6 +79,17 @@ public class Controller_input {
         log.info("조회된 정보는: "+article);
         model.addAttribute("article", article);
         return "show";
+    }
+
+    @GetMapping("/articles")
+    public String index(Model model) {
+        /** 1. 디비에서 모든 데이터 가지고 오기*/
+        ArrayList<Article> articleList = articleRepository.findAll();
+
+        /** 2. 가지고온 데이터를 뷰화면에 전달 --> Model */
+        model.addAttribute("articleList", articleList);
+
+        return "index";
     }
 
 

@@ -1,9 +1,6 @@
 package com.spring.e0723.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -14,7 +11,7 @@ import lombok.ToString;
 @ToString
 public class Article {
     @Id // 이변수가 PK라고 선언하는 골벵이
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column
@@ -23,6 +20,7 @@ public class Article {
     @Column
     private String content;
 
-
-
+    public Long getId() {
+        return id;
+    }
 }
