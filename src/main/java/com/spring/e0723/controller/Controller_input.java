@@ -39,8 +39,8 @@ public class Controller_input {
 
     //3. 생성자 DI
     private final ArticleRepository articleRepository;
-    Controller_input(ArticleRepository articleRepository){
-        this.articleRepository = articleRepository;
+    Controller_input(ArticleRepository articleRepository){this.articleRepository = articleRepository;
+
     }
 
     @GetMapping("/input")
@@ -92,8 +92,45 @@ public class Controller_input {
         return "index";
     }
 
+    @GetMapping("/edit/{id}")
+    public String edit(@PathVariable Long id, Model model
+
+    ){
+        log.info("/edit() / id : "+id);
+
+        Article byId = articleRepository.findById(id).orElse(null);
+        log.info("검샏긴 데이터: " + byId);
+
+        model.addAttribute("article", byId);
+        return "edit";
+    }
+
+    @PostMapping("/update")
+    public String update( ArticleForm form) {
+        log.info("update() / form : "+form);
+
+        /** DTO 클래스를 Entitiy 클래스로 변경*/
+        Article entity = form.toEntity();
+        log.info("entity:" + entity);
+
+        /** 사용자가 입력한 데이터를 디비에 업데이트*/
+        Article save = articleRepository.save(entity);
+
+        /** 상세페이지로 다시 이동*/
+        return "redirect:/show/"+save.getId();
 
 
+    }
+
+    @GetMapping("/delete/{id}")
+    public String delete(@PathVariable Long id) {
+        log.info("delete() / 삭제합니다.");
+
+        /** 지우는 방법 1. 아이디로 지우기*/
+        articleRepository.deleteById(id);
+
+        return "redirect:/articles";
+    }
 
 
 }
